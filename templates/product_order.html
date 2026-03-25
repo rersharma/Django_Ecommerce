@@ -1,0 +1,32 @@
+{% extends 'usermain.html' %}
+{% block title %} Product Order {% endblock %}
+
+{% block content %}
+
+ <div class="container mt-5">
+      <div class="row mt-5">
+       <h2 class="text-center" style="background-color: antiquewhite;color:blue">Welcome , {{email}}</h2>
+       <div class="col-sm-4 mt-5">
+         <img src="{{products.p_photo.url }}" class="img-fluid"/>
+       </div>
+       <div class="col-sm-6 mt-5 offset-sm-2">
+        <h2 class="text-center text-primary mb-2">{{products.pname}}</h2>
+        <h5>Product Serial No : {{products.id}}</h5>
+        <p class="mt-2"><b>Description:</b>&nbsp;&nbsp;{{products.pdescription}}</p>
+        <h3>{{products.pprice}}Rs./</h3>
+        <h6 class="text-success">Available in stock.</h6>
+        <h5>Bank Offer : HDFC Bank , SBI Bank , ICICI Credit card </h5>
+        <h6 class="text-danger">No Cost EMI upto 6 Month</h6>
+        <form action="buynow" method="post">
+          {% csrf_token %}
+            <input type="hidden" name="pid" value="{{products.id}}">
+            <label><b>Quantity:</b></label>
+            <input type="number" name="quantity" value="1" class="form-control" required><br>
+            <input type="submit" value="Payment Now" class="btn btn-primary">
+        </form>
+       </div>
+
+      </div>
+ </div>
+
+{% endblock %}

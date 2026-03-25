@@ -1,0 +1,178 @@
+{% extends 'admin_main.html' %}
+{% block title %}Product List{% endblock %}
+
+{% block content %}
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+<div class="container-fluid mt-5">
+   <div class="row">
+      <div class="col-sm-12">
+
+         <div class="table-responsive">
+            <table class="table table-bordered table-striped" id="product">
+
+               <thead class="table-dark">
+                  <tr>
+                     <th>ID</th>
+                     <th>Name</th>
+                     <th>Type</th>
+                     <th>Price</th>
+                     <th>Image</th>
+                     <th>Description</th>
+                     <th>Manage</th>
+                  </tr>
+               </thead>
+
+               <tbody>
+                  {% for item in data %}
+                  <tr>
+                     <td>{{ item.id }}</td>
+                     <td>{{ item.pname }}</td>
+                     <td>{{ item.ptype }}</td>
+                     <td>{{ item.pprice }}</td>
+
+                     <td>
+                        <img src="{{ item.p_photo.url }}" width="80" height="80">
+                     </td>
+
+                     <td>{{ item.pdescription }}</td>
+
+                     <td>
+
+                        <a href="{% url 'product_delete' item.id %}" class="btn btn-danger btn-sm"
+                           onclick="return confirm('Are you sure?')">
+                           Delete
+                        </a>
+
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#productModal"
+                           onclick="setProduct(
+                                                '{{item.id}}',
+                                                '{{item.pname|escapejs}}',
+                                                '{{item.ptype}}',
+                                                '{{item.pprice}}',
+                                                '{{item.p_photo.url}}',
+                                                '{{item.pdescription|escapejs}}'
+                                                )">
+                           Update
+                        </button>
+
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+
+            </table>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+<!-- Update Modal -->
+
+<div class="modal fade" id="productModal">
+   <div class="modal-dialog">
+      <div class="modal-content">
+
+         <div class="modal-header">
+            <h5 class="modal-title">Update Product</h5>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+         </div>
+
+         <div class="modal-body">
+
+            <form action="" method="post" enctype="multipart/form-data">
+
+               {% csrf_token %}
+
+               <input type="hidden" name="pid" id="pid">
+
+               <div class="mb-3">
+                  <label>Product Name</label>
+                  <input type="text" name="name" id="name" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label>Product Type</label>
+                  <select name="ptype" id="ptype" class="form-control" required>
+                     <option value="">Select Type</option>
+                     <option value="Electronic">Electronic</option>
+                     <option value="Cloth">Cloth</option>
+                     <option value="Grocery">Grocery</option>
+                     <option value="Furniture">Furniture</option>
+                  </select>
+               </div>
+
+               <div class="mb-3">
+                  <label>Price</label>
+                  <input type="number" name="price" id="price" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label>Current Image</label><br>
+                  <img id="preview" width="100">
+               </div>
+
+               <div class="mb-3">
+                  <label>Change Photo</label>
+                  <input type="file" name="photo" class="form-control">
+               </div>
+
+               <div class="mb-3">
+                  <label>Description</label>
+                  <textarea name="description" id="description" class="form-control" required></textarea>
+               </div>
+
+               <button class="btn btn-primary w-100">
+                  Update Product
+               </button>
+
+            </form>
+
+         </div>
+
+      </div>
+   </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+
+   $(document).ready(function () {
+
+      $('#product').DataTable({
+
+         pageLength: 5,
+         lengthMenu: [5, 10, 25, 50],
+         ordering: true,
+         searching: true,
+         pagingType: "simple_numbers"
+
+      });
+
+   });
+
+
+   function setProduct(id, name, type, price, image, description) {
+
+      document.getElementById("pid").value = id;
+      document.getElementById("name").value = name;
+      document.getElementById("ptype").value = type;
+      document.getElementById("price").value = price;
+      document.getElementById("description").value = description;
+
+      document.getElementById("preview").src = image;
+
+   }
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'main.html' %}
+{% block title %} Signup {% endblock %}
+
+           
+{% block content %}
+
+<div class="container">
+   <div class="row">
+       <div class="col-sm-6 offset-sm-3 mt-5" style="border:1px solid grey; padding:10px;">
+               <h2 class="text-center text-primary mb-3"><u>Create An Account</u></h2>
+              <form action="Newuser" method="post" enctype="multipart/form-data">
+                   {% csrf_token %}
+                   <div class="mt-4">
+                     <label for="name">Name</label>
+                     <input type="text" name="name" id="name" required class="form-control" />
+                   </div>
+
+                   <div class="mt-4">
+                     <label for="email">Email</label>
+                     <input type="email" name="email" id="email" required class="form-control" />
+                   </div>
+
+                   <div class="mt-4">
+                     <label for="mobile">Mobile</label>
+                     <input type="number" name="mobile" id="mobile" required class="form-control" />
+                   </div>
+
+                    <div class="mt-4">
+                     <label for="password">Password</label>
+                     <input type="password" name="password" id="password" required class="form-control" />
+                   </div>
+
+                    <div class="mt-4">
+                     <label for="Photo">Photo</label>
+                     <input type="file" name="photo" id="Photo" required class="form-control" />
+                   </div>
+
+                     <div class="mt-4">
+                        <label for="Address">Address</label>
+                        <textarea name="address" id="Address" required class="form-control"></textarea>
+                    </div>
+                     <div class="mt-4">
+                        <input type="submit" class="btn btn-primary" name="SignupNow" value="Signup Now">
+                     </div>
+
+              </form>
+              <div class="text-center text-success">
+                  <h3>{{message}}</h3>
+              </div>
+       </div>
+   </div>
+</div>
+
+{% endblock %}

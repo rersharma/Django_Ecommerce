@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cpanel</title>
+    {%  load django_bootstrap5 %}
+    {% bootstrap_css %}
+</head>
+<body>
+      <div class="container mt-5">
+          <div class="row mt-5">
+                <div class="col-sm-5 offset-sm-3" style="border: 1px solid grey;padding:10px;">
+                    <h1 class="text-center text-white p-3 bg-primary">C-PANEL</h1>
+                    <form action="check_user" method="post">
+                        {% csrf_token %}
+                        <div class="mt-2">
+                            <label id="email">Email-Id</label>
+                            <input type="email" name="email" id="email" required class="form-control">
+                        </div>
+
+                         <div class="mt-2">
+                            <label id="password">Password</label>
+                            <input type="password" name="password" id="password" required class="form-control">
+                        </div>
+                          
+                        <div class="mt-2">
+                             <input type="submit" class="btn btn-primary" value="Login">
+                        </div>
+                    </form>
+                    <div class="mt-5">
+                         <h5>
+                    {% for message in messages %}
+                           {{ message }}
+                    {% endfor %}
+
+                </h5>
+                    </div>
+                </div>
+          </div>
+      </div>
+
+  {% bootstrap_javascript %}
+</body>
+</html>

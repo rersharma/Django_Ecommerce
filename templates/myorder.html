@@ -1,0 +1,97 @@
+{% extends 'usermain.html' %}
+{% block title %} Dasboard {% endblock %}
+
+{% block content %}
+
+<style>
+.blink {
+  animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+</style>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+<h1 class="text-center mt-1">Order List Welcome , {{ username }}</h1>
+
+<div class="container-fluid mt-5">
+   <div class="row">
+      <div class="col-sm-12">
+
+         <div class="table-responsive">
+            <table class="table table-bordered table-striped" id="product">
+
+               <thead class="table-dark">
+                  <tr>
+                     <th>ID</th>
+                     <th>Product Id</th>
+                     <th>User Name</th>
+                     <th>Email Id</th>
+                     <th>Product Name</th>
+                     <th>Product Type</th>
+                     <th>Product Price</th>
+                     <th>Photo</th>
+                     <th>Qnty</th>
+                     <th>Final Price</th>
+                     <th>Description</th>
+                     <th>Status</th>
+                     <th>Manage</th>
+                  </tr>
+               </thead>
+
+               <tbody>
+                  {% for item in myorder %}
+                  <tr class="{% if item.order_shipped_status == 'cancel' %}table-danger{% else %}table-success{% endif %}">
+                     <td>{{ item.id }}</td>
+                     <td>{{ item.product_id }}</td>
+                     <td>{{ item.user_name }}</td>
+                     <td>{{ item.user_emailid }}</td>
+                     <td>{{ item.pname }}</td>
+                     <td>{{ item.ptype }}</td>
+                     <td>{{ item.pprice }}</td>
+                     <td>
+                        <img src="{{ item.p_photo }}" width="80" height="80">
+                     </td>
+                     <td>{{ item.qunatity }}</td> 
+                     <td>{{ item.total_price }}</td>
+                     <td>{{ item.pdescription}}</td>
+                     <td>{{ item.order_shipped_status}}</td>
+                     <td>
+                        <a href="cancelorder/{{item.id}}/" class="btn btn-danger">Cancel Order</a>
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+
+            </table>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+
+   $(document).ready(function () {
+
+      $('#product').DataTable({
+      });
+
+   });
+   </script>
+
+
+
+{% endblock %}

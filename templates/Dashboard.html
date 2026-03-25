@@ -1,0 +1,49 @@
+{% extends 'usermain.html' %}
+{% block title %} Dasboard {% endblock %}
+
+{% block content %}
+<style>
+.blink {
+  animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+</style>
+ <h1 class="text-center mt-1">Welcome TO Dashboard , {{ username }}</h1>
+ <div class="container mt-5">
+    <div class="row mt-5">
+       <h2 class="text-center mb-2 blink" style="background-color:powderblue;color:brown;padding:10px;">
+Products
+</h2>          {% for item in product %}
+          <div class="col-sm-3 mt-5">
+            
+             <div class="card" style="width: 18rem;">
+                <img src="{{ item.p_photo.url }}" class="card-img-top" width="200" height="200" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title text-center">{{item.pname}}</h5>
+                    <h6 class="text-center">{{item.pprice}} Rs.</h6>
+                    <p class="card-text">{{item.pdescription}}</p>
+                    <div class="text-center">
+                        <form action="order" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="pid" value="{{item.id}}" required/>
+                            <input type="submit" class="btn btn-primary" value="Buy Now"/>
+                         </form>
+                    </div>
+                </div>
+             </div>
+          </div>
+          {% endfor %}
+
+
+    </div>
+ </div>
+
+
+
+{% endblock %}
+

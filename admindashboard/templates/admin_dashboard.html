@@ -1,0 +1,107 @@
+{% extends 'admin_main.html' %}
+{% block title %} Admin Dashboard {% endblock %}
+
+{% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<h1 align="center" class="mt-4">Welcome TO Admin Dashboard</h1>
+ <hr>
+ <div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-5 offset-sm-1">
+             <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+              <hr>
+             <div id="myChart3" style="width:100%; max-width:600px; height:500px;">
+</div>
+        </div>
+        <div class="col-sm-5 offset-sm-1">
+                <canvas id="myChart2" style="width:100%;max-width:600px"></canvas>
+        </div>
+    </div>
+ </div>
+
+<script>
+var xValues = [
+  "Jan", "Feb", "Mar", "Apr",
+  "May", "June", "July", "Aug",
+  "Sep", "Oct", "Nov", "Dec"
+];
+var yValues = {{ monthly_orders|safe }};
+var barColors = ["red", "green","blue","orange","brown","red", "green","blue","orange","brown","blue","orange"];
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Total Order Per Month of year "+ new Date().getFullYear()
+    }
+  }
+});
+</script>
+
+
+<script>
+var xValues = ["Total Delivered", "Total Admin Canceled", "Shipped", "Packed", "User Canceled"];
+var yValues = [{{Dl_c}},{{c_a}},{{sh_ct}}, {{p_c}}, {{ur_cancel}}];
+var barColors = [
+  "#b91d47",
+  "#00aba9",
+  "#2b5797",
+  "#e8c3b9",
+  "#1e7145"
+];
+
+new Chart("myChart2", {
+  type: "pie",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "Product All Over Insight information of Year"+ new Date().getFullYear()
+    }
+  }
+});
+</script>
+
+<script>
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+const data = google.visualization.arrayToDataTable([
+  ['stocks', 'Mhl'],
+  ['Cloth',{{cloth_count}}],
+  ['Grocery',{{Grocery_count}}],
+  ['Furniture',{{Furniture_count}}],
+  ['Electronic',{{electronic_count}}],
+]);
+
+const options = {
+  title:'Total Product Stocks',
+  is3D:true
+};
+
+const chart = new google.visualization.PieChart(document.getElementById('myChart3'));
+  chart.draw(data, options);
+}
+</script>
+
+
+
+
+{% endblock %}

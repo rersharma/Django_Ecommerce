@@ -1,0 +1,60 @@
+{% extends 'admin_main.html' %}
+{% block title %} Add Product {% endblock %}
+
+{% block content %}
+
+ <div class="container">
+ 
+     <div class="row">
+  
+         <div class="col-sm-6 mt-5 offset-sm-3" style="border: 1px solid grey;padding:10px;">
+                 <h2 class="text-center text-white p-3 bg-primary">Add Product</h2>
+                 <form action="product_add" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mt-2">
+                         <label for="name">Product Name</label>
+                         <input type="text" name="name" id="name" required class="form-control">
+                    </div>
+
+                    <div class="mt-2">
+                         <label id="ptype">Product Type</label>
+                         <select name="ptype" id="ptype" required class="form-control">
+                            <option selected disabled value="">Select Product Type</option>
+                            <option>Electronic</option>
+                            <option>Cloth</option>
+                            <option>Grocery</option>
+                            <option>Furniture</option>
+                         </select>
+                    </div>
+
+                    <div class="mt-2">
+                         <label for="price">Product Price</label>
+                         <input type="number" name="price" id="price" required class="form-control">
+                    </div>
+                    <div class="mt-2">
+                         <label for="photo">Product Photo</label>
+                         <input type="file" name="photo" id="photo" required class="form-control">
+                    </div>
+
+                    <div class="mt-2">
+                         <label for="description">Description</label>
+                         <textarea name="description" id="description" required class="form-control"></textarea>
+                    </div>
+                     <div class="mt-2">
+                         <input type="submit" value="Add Now" class="btn btn-primary">
+                     </div>
+                 </form>
+                 <div class="text-center text-success mt-4">
+                        <h5>
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+
+                        </h5>
+                 </div>
+         </div>
+
+     </div>
+
+ </div>
+{% endblock %}

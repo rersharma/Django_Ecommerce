@@ -1,0 +1,127 @@
+{% extends 'admin_main.html' %}
+{% block title %}Product List{% endblock %}
+
+{% block content %}
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+<div class="container-fluid mt-5">
+   <div class="row">
+      <div class="col-sm-12">
+         <h2 class="text-center text-white p-3 bg-primary">User Order List</h2>
+         <div class="table-responsive">
+            <table class="table table-bordered table-striped" id="product">
+
+               <thead class="table-dark">
+                  <tr>
+                     <th>ID</th>
+                     <th>Product Id</th>
+                     <th>User Name</th>
+                     <th>Email Id</th>
+                     <th>Product Name</th>
+                     <th>Product Type</th>
+                     <th>Product Price</th>
+                     <th>Photo</th>
+                     <th>Qnty</th>
+                     <th>Final Price</th>
+                     <th>Description</th>
+                     <th>Status</th>
+                     <th>Manage</th>
+                  </tr>
+               </thead>
+
+               <tbody>
+                  {% for item in userorders %}
+                  <tr class="{% if item.order_shipped_status == 'cancel' %}table-danger{% else %}table-success{% endif %}">
+                     <td>{{ item.id }}</td>
+                     <td>{{ item.product_id }}</td>
+                     <td>{{ item.user_name }}</td>
+                     <td>{{ item.user_emailid }}</td>
+                     <td>{{ item.pname }}</td>
+                     <td>{{ item.ptype }}</td>
+                     <td>{{ item.pprice }}</td>
+                     <td>
+                        <img src="{{ item.p_photo }}" width="80" height="80">
+                     </td>
+                     <td>{{ item.qunatity }}</td> 
+                     <td>{{ item.total_price }}</td>
+                     <td>{{ item.pdescription}}</td>
+                     <td>{{ item.order_shipped_status}}</td>
+                     <td>
+                        <a href="#" class="btn btn-success" onclick="valueset('{{item.id}}','{{item.pname}}','{{item.order_shipped_status}}')" data-bs-toggle="modal" data-bs-target="#remarkmodal">Remarks</a>
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+
+            </table>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="remarkmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Product Shipped Status Manage</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="remark_order" method="post">
+            {% csrf_token %}
+            <input type="hidden" id="orderid" required name="orderid">
+             <div class="mt-2">
+                <label for="pname">Product Name</label>
+                <input type="text" name="pname" id="pname" readonly required class="form-control"/>
+             </div>
+             <div class="mt-2">
+                <label for="remark">Shipped Message</label>
+                <select name="remark" id="remark" required  class="form-control">
+                  <option selected disabled value="">Select Remarks</option>
+                  <option>Cancel By Admin</option>
+                  <option>Packed</option>
+                  <option>Confirmed</option>
+                  <option>Shipped</option>
+                  <option>Out of Delivery</option>
+                  <option>Delivered</option>
+                </select>
+             </div>
+             <div class="text-center mt-5">
+                <button class="btn btn-success">Publish</button>
+             </div>
+          </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+
+   $(document).ready(function () {
+
+      $('#product').DataTable({
+      });
+
+   });
+   
+   function valueset(id,name,status){
+     document.getElementById("orderid").value=id; 
+     document.getElementById("pname").value=name; 
+    // document.getElementById("remark").value=status; 
+   }
+
+   </script>
+
+   {% endblock %}

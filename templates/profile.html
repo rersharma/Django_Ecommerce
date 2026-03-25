@@ -1,0 +1,42 @@
+{% extends 'usermain.html' %}
+{% block title %} Dasboard {% endblock %}
+
+{% block content %}
+<style>
+.blink {
+  animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+</style>
+<div class="container">
+    <div class="row">
+         <h2 class="text-center mb-2 blink" style="background-color:powderblue;color:brown;padding:10px;">
+My Profile
+</h2>
+        <div class="col-sm-6 offset-sm-4 mt-2">
+            <div class="card" style="width: 22rem;">
+  <img src="{{ user_info.photo.url}}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{name}}</h5>
+    <p class="card-text">{{user_info.address}}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">{{user_info.email}}</li>
+    <li class="list-group-item">{{user_info.mobile}}</li>
+  </ul>
+  <div class="text-center">
+    <a href="#" class="btn btn-primary">Update</a>
+    <a href="#" class="btn btn-danger">Delete Account</a>
+  </div>
+</div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

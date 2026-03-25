@@ -1,0 +1,128 @@
+{% extends 'admin_main.html' %}
+{% block title %} Admin Inbox {% endblock %}
+
+{% block content %}
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+<div class="container mt-5">
+    <div class="row mt-5">
+        <div class="col-sm-12 mt-5">
+            <h1 class="text-center text-primary mb-4">Admin Inbox</h1>
+          <h6 class="text-success">{{message}}</h6>
+            <div class="table-responsive">
+                <table id="inboxTable" class="table table-primary table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>User Message</th>
+                            <th>Admin Reply</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data %}
+                        <tr>
+                            <td>{{item.id}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.email}}</td>
+                            <td>{{item.subject}}</td>
+                            <td>{{item.message}}</td>
+                            <td>{{item.reply}}</td>
+                            <td class="text-center">
+                                <a href="#"
+                                   class="btn btn-primary"
+                                   data-id="{{item.id}}"
+                                   data-message="{{item.message}}"
+                                   data-reply="{{item.reply}}"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#replymodal"
+                                   onclick="set_value(this)">
+                                   Reply
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="replymodal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Inbox Reply</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form action="inbox" method="post">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="message_id" id="message_id">
+
+                    <div class="mt-2">
+                        <label>User Message</label>
+                        <textarea name="usermessage" id="user_mesg"
+                                  class="form-control" readonly></textarea>
+                    </div>
+
+                    <div class="mt-3">
+                        <label>Admin Reply</label>
+                        <textarea name="adminmessage" id="admin_mesg"
+                                  class="form-control" required></textarea>
+                    </div>
+
+                    <div class="mt-3 text-end">
+                        <button type="submit" class="btn btn-success">
+                            Send Reply
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- jQuery + DataTables -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<!-- DataTable Init -->
+<script>
+$(document).ready(function () {
+    $('#inboxTable').DataTable({
+        pageLength: 5,
+        lengthMenu: [5, 10, 25, 50],
+        ordering: true,
+        searching: true
+    });
+});
+</script>
+
+<!-- Modal Data Fill -->
+<script>
+function set_value(el) {
+    let id = el.getAttribute("data-id");
+    let user_mesg = el.getAttribute("data-message");
+    let admin_mesg = el.getAttribute("data-reply");
+
+    document.getElementById("message_id").value = id;
+    document.getElementById("user_mesg").value = user_mesg;
+    document.getElementById("admin_mesg").value = admin_mesg;
+}
+</script>
+
+{% endblock %}
